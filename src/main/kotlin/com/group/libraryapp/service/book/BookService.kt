@@ -7,6 +7,8 @@ import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
+import com.group.libraryapp.external.booksearch.BookSearchResponse
+import com.group.libraryapp.external.booksearch.BookSearchService
 import com.group.libraryapp.repository.user.loanhistory.UserLoanHistoryQuerydslRepository
 import com.group.libraryapp.util.fail
 import org.springframework.stereotype.Service
@@ -17,6 +19,7 @@ class BookService(
   private val bookRepository: BookRepository,
   private val userRepository: UserRepository,
   private val userLoanHistoryQuerydslRepository: UserLoanHistoryQuerydslRepository,
+  private val bookSearchService: BookSearchService,
 ) {
   
   @Transactional
@@ -45,6 +48,12 @@ class BookService(
   @Transactional(readOnly = true)
   fun countLoanedBook(): Int {
     return userLoanHistoryQuerydslRepository.count(UserLoanStatus.LOANED).toInt()
+  }
+  
+  fun searchBooks(query: String): List<BookSearchResponse> {
+    val existBookNames = bookRepository.findAllByNameContains(query)
+      .map { it.name }
+    return bookSearchService.search(query).filter { it.name !in existBookNames }
   }
   
 }

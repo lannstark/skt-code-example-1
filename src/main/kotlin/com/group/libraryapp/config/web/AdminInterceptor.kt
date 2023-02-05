@@ -13,9 +13,9 @@ class AdminInterceptor(
 ) : HandlerInterceptor {
   
   override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-    val email = request.getHeader("Authorization") ?: throw IllegalArgumentException("헤더에 이메일 정보가 없습니다.")
-    val admin = adminRepository.findByEmail(email) // Admin 정보를 가져와 로깅
-    log.info("어드민 접근 : ${admin.id}")
+//    val email = request.getHeader("Authorization") ?: throw IllegalArgumentException("헤더에 이메일 정보가 없습니다.")
+//    val admin = adminRepository.findByEmail(email) // Admin 정보를 가져와 로깅
+//    log.info("어드민 접근 : ${admin.id}")
     return super.preHandle(request, response, handler)
   }
   
