@@ -36,10 +36,23 @@ class User constructor(
 
   fun loanBook(book: Book) {
     this.userLoanHistories.add(UserLoanHistory(this, book.name))
+    book.minusInventory()
   }
 
   fun returnBook(bookName: String) {
     this.userLoanHistories.first { history -> history.bookName == bookName }.doReturn()
+  }
+  
+  companion object {
+    fun fixture(
+      name: String = "A",
+      age: Int? = null,
+    ): User {
+      return User(
+        name = name,
+        age = age,
+      )
+    }
   }
 
 }
